@@ -1,0 +1,54 @@
+[33m1f34296[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m)[m Se realizo la ruta y metodo de la exportacion del excel
+[33m836447f[m[33m ([m[1;31morigin/dev[m[33m)[m Se realizaron cambios en las relaciones y en un metodo
+[33m6c97eff[m Update Jurado.php de participante a jurado error de programacion
+[33m1c6970c[m listo el reporte solo para verse para los admin y asi mismo desde el 18 a las 8:00 am
+[33m71fcbc0[m listas tareas programadas de acuerdo a la fecha y rutas con controladores
+[33m18c2fdb[m errores configurados en español y al añadir participantes generamos contraseñas de los mismos y exportamos un excel con sus datos
+[33ma388251[m problema de validacion de que un usuario solo peude dar like y comentar una publicacion, ademas de que el jurado solo puede calificar una vez y asi mismo no puedo subir dos publicaciones para una misma categoria
+[33m3594952[m rutas mejor organizadas, solucionado codigo, agregada nueva validacion faltante asi como otras lineas de codigo al eliminar post, falta lo de las relaciones uno a uno
+[33mcb6fa84[m problema solucionado al momento de calificar, pasar el post a calificado listo
+[33m7e71582[m rutas colocadas en el lugar que van
+[33m6aed61b[m listo calificacion reporte todo funcionando
+[33m52f5d4d[m[33m ([m[1;32mcambios[m[33m)[m Se hizo los post embebidos
+[33m77ef4da[m Se implemento los try catch
+[33m26610ea[m lista validacion de roles, y arregladas rutas
+[33m4ff80c6[m listo reporte de calificacion al igual que modificaciones en el modelo de post
+[33m4442245[m Se realizo los cambios.
+[33mefa976d[m Merge branch 'correciones' into dev
+[33m08d6c5f[m[33m ([m[1;32mcorreciones[m[33m)[m Se compro los controladores con exito
+[33m6b97b01[m Merge branch 'dev' of https://github.com/Jean10112002/api-ambiente-saludable into dev
+[33me3d3e13[m se añadio la creacion de un participante por defecto para probar rutas
+[33m5a5f96f[m Esta funcionando todo
+[33mbca9bd7[m Merge branch 'controladores' into dev
+[33m8ac6e8d[m Merge branch 'dev' of https://github.com/Jean10112002/api-ambiente-saludable into dev
+[33mf9f1111[m[33m ([m[1;32mcontroladores[m[33m)[m xd
+[33m5004185[m listo seeder de calificaciones
+[33m5a531f8[m cambios
+[33m315c4e3[m Se realizo todo con exito.
+[33m21aa337[m[33m ([m[1;32mcontrol[m[33m)[m Se realizo todo en calificacion
+[33m14283ae[m Falta la calificacion
+[33mf0ae7cf[m solo falta seeder de calificacion
+[33m347b3e9[m seeders listos
+[33m1876e01[m Se realizo cambio con exito.
+[33m90ffad2[m Merge branch 'dev' of https://github.com/Jean10112002/api-ambiente-saludable into dev
+[33me7f5bcd[m[33m ([m[1;32mseeder[m[33m)[m Se realizo controlador post, participante,like y postComentario
+[33m0753030[m cambios en usuario y participante agregando columna rol, ademas nueva ruta y controlador para los reportes de los ganadores del concurso
+[33m19773b6[m[33m ([m[1;32mtrabajar[m[33m)[m modelo solucionado la relacion
+[33m352e566[m rutas mejoradas y ordenadas habia un fallo
+[33ma46dc9a[m rutas agregadas que faltaron
+[33m1f6d087[m routas arregladas y cambio de jurado por user
+[33m6027879[m[33m ([m[1;32mlogicacontralador[m[33m)[m Se realizo controlador de
+[33m3728549[m[33m ([m[1;32mrutas[m[33m)[m Se realizo controlador de comentario, categoria y imagen
+[33m539a82d[m Se realizo todo el controlador de imagen
+[33m9455e85[m Se realizarion las rutas con exito.
+[33m87a922e[m Se realizaron rutas (post,imagen,categoria y comentario)
+[33m7fbe2e2[m listo el seeder para cargar el excel para la base de datos y cambio en la migracion de participante uniendo el campo nombre y apellido en uno solo campo
+[33mcd80caa[m solucionado problema de manejo de error al autenticar, configurado zona horaria correcta
+[33mc3f5211[m mostrar error de no aunteticado solucionado para la autenticacion
+[33md69000c[m seeder de categoria y comentarios listos
+[33m2c08b61[m auth lista con seeder para jurado y admin que falta llenar con los datos reales
+[33mb16218d[m Se realizaron cambios de nombre en las migraciones y modelos
+[33m975819c[m[33m ([m[1;32mcloudinary[m[33m)[m Se realizo cambio con exito
+[33m9a3ed87[m[33m ([m[1;32mcheckout[m[33m)[m Se realizo la instalacion de cloudinary con exito
+[33m4cea639[m[33m ([m[1;32mrelacionar-tabla[m[33m)[m Se realizo las relaciones con exito
+[33md2f965a[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m archivos base
