@@ -35,29 +35,29 @@ Route::group(['middleware' => ["auth:sanctum"]], function () {
     Route::get('post/search-categoria/{id}', [PostController::class, 'showCategoria']);
     Route::apiResource('post', PostController::class)->only('index','destroy','show'); //*TODO solo participante store y solo admin destroy
 
-    Route::group(['middleware' => 'daterange'], function () {
+   // Route::group(['middleware' => 'daterange'], function () {
         Route::apiResource('interaccion/comentario', Comentario_Post::class)->only('store'); //*TODO solo participante
         Route::apiResource('interaccion/like', LikeController::class)->only('store', 'destroy'); //*TODO solo participante
         Route::apiResource('post/imagen', ImagenController::class)->only('store','destroy'); //*TODO solo participante
         Route::apiResource('post', PostController::class)->only('store'); //*TODO solo participante store y solo admin destroy
-    });
+    //});
 
-    Route::group(['middleware' => 'daterangeCalificar'], function () {
+   // Route::group(['middleware' => 'daterangeCalificar'], function () {
 
         Route::apiResource('calificacion', CalificacionController::class)->only('store'); //*TODO solo jurado
         Route::get('post/search/sincalificacion', [PostController::class, 'postSinCalificarSinCategoria']); //*TODO solo jurado
         Route::get('post/search-categoria-sincalificar/{id}', [PostController::class, 'postSinCalificarConCategoria']); //*TODO solo jurado
 
-    });
+   // });
 
     Route::controller(UserController::class)->group(function () {
         Route::get('user-profile', 'userProfile');
         Route::post('logout',  'logout');
         Route::get('exportarexcel', [UserController::class, 'exportar']);
     });
-    Route::group(['middleware' => 'daterangeReporte'], function () {
+    //Route::group(['middleware' => 'daterangeReporte'], function () {
         Route::get('calificacion/reporte', [CalificacionController::class, 'calificacionReporte']);
-    });
+   // });
 });
 Route::post('/login-jurado', [UserController::class, 'login']);
 Route::post('/login-participante', [ParticipanteController::class, 'login']);
