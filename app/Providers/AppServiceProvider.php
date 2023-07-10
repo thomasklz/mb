@@ -13,8 +13,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        ini_set('post_max_size', '20M');
-        ini_set('upload_max_filesize', '20M');
     }
 
     /**
@@ -24,7 +22,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        ini_set('upload_max_filesize', '20M');
-        ini_set('post_max_size', '20M');
     }
 }
