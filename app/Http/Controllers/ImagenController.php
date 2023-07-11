@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -46,35 +47,43 @@ class ImagenController extends Controller
     public function store(Request $request)
     {
         //
-         $usuario=Auth::guard('sanctum')->user();
-        if($usuario->rol!=='participante'){
-            return response()->json(["error"=>"no autorizado"],403);
+        $usuario = Auth::guard('sanctum')->user();
+        if ($usuario->rol !== 'participante') {
+            return response()->json(["error" => "no autorizado"], 403);
         }
 
-        $validator= Validator::make($request->all(),$this->rulesImagenes,$this->mensajes);
-        if($validator -> fails()){
-            $messages=$validator->getMessageBag();
+        $validator = Validator::make($request->all(), $this->rulesImagenes, $this->mensajes);
+        if ($validator->fails()) {
+            $messages = $validator->getMessageBag();
             return response()->json([
-                'messages'=>$messages
-            ],500);
+                'messages' => $messages
+            ], 500);
         }
-        $file = request()->file('imagen');
-        try{
-        $obj = Cloudinary::upload($file->getRealPath(),['folder'=>'AmbienteSaludable']);
-        $imagen_id = $obj->getPublicId();
-        $url = $obj->getSecurePath();
 
-        $imagen = Imagen::create([
+        try {
+            $imagen = $request->file('imagen');
+            // Validar que se haya seleccionado un archivo
+            if ($imagen) {
+                // Guardar la imagen con un nombre único utilizando el ID
+                // Generar un nombre único para la imagen
+                $nombreImagen = uniqid() . '.' . $imagen->getClientOriginalExtension();
 
-            'imagen_url'=>$url,
-            'id_imagen'=>$imagen_id,
+                // Guardar la imagen en el almacenamiento local
+                $imagen->storeAs('public/imagenes', $nombreImagen);
 
-        ]);
-        return response()->json(['messages'=>'Se creo una la imagen con exito.','imagen'=> $imagen]);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
-
+                // Obtener la ruta completa de la imagen guardada
+                $rutaImagen = '/storage/imagenes/' . $nombreImagen;
+                $imagen = Imagen::create([
+                    "imagen_url" => $rutaImagen,
+                    "nombre"=>$nombreImagen
+                ]);
+                // Aquí puedes realizar otras operaciones, como guardar el nombre de la imagen en la base de datos, etc.
+                return response()->json(['message' => "imagen subida", "imagen" => $imagen], 200);
+            }
+            return response()->json(['error' => "no se ha seleccionado ninguna imagen"], 500);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -109,12 +118,10 @@ class ImagenController extends Controller
     public function destroy($id)
     {
         try {
-            $producto = Imagen::findOrFail($id);
-            $public_id = $producto->id_imagen;
-            Cloudinary::destroy($public_id);
-            return response()->json([
-                'messages' => "foto eliminada"
-            ], Response::HTTP_OK);
+            $imagen = Imagen::findOrFail($id);
+                Storage::delete('public/imagenes/' . $imagen->nombre);
+                $imagen->delete();
+                return response()->json(['message' => 'Imagen eliminada exitosamente'], 200);
         } catch (\Throwable $e) {
             return response()->json([
                 'message' => "error al eliminar la foto",
