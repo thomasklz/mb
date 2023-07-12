@@ -63,7 +63,16 @@ Route::group(['middleware' => ["auth:sanctum"]], function () {
 Route::post('/login-jurado', [UserController::class, 'login']);
 Route::post('/login-participante', [ParticipanteController::class, 'login']);
 Route::get('/storageLink', function(){
-    Artisan::call('storage:link');
+    try {
+        Artisan::call('storage:link');
+        return response()->json([
+            "message"=>"listo vinculo"
+        ]);
+    } catch (\Throwable $th) {
+        return response()->json([
+            "error"=>$th->getMessage()
+        ],500);
+    }
   });
 
 /* Route::group(['middleware' => 'daterangeReporte'], function () {
