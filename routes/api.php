@@ -10,6 +10,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ParticipanteController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,7 +62,9 @@ Route::group(['middleware' => ["auth:sanctum"]], function () {
 });
 Route::post('/login-jurado', [UserController::class, 'login']);
 Route::post('/login-participante', [ParticipanteController::class, 'login']);
-
+Route::get('/storageLink', function(){
+    Artisan::call('storage:link');
+  });
 
 /* Route::group(['middleware' => 'daterangeReporte'], function () {
     Route::get('calificacion/reporte', [CalificacionController::class, 'calificacionReporte']);
