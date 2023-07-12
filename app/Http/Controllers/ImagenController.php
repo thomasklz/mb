@@ -19,13 +19,13 @@ class ImagenController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    /*   public $rulesImagenes=array(
+    public $rulesImagenes = array(
 
         'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000|min:1000|dimensions:max_width=4032,max_height=4032',
-); */
-    public $rulesImagenes = array(
-        'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000|min:1000',
     );
+    /* public $rulesImagenes = array(
+        'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000|min:1000',
+    ); */
     public $mensajes = array(
 
         'imagen.required' => 'Se requiere una imagen.',
@@ -55,28 +55,29 @@ class ImagenController extends Controller
             return response()->json(["error" => "no autorizado"], 403);
         }
 
-        /* $validator = Validator::make($request->all(), $this->rulesImagenes, $this->mensajes);
+        $validator = Validator::make($request->all(), $this->rulesImagenes, $this->mensajes);
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
             return response()->json([
                 'messages' => $messages
             ], 500);
-        } */
+        }
         $file = request()->file('imagen');
-        try {
-            $obj = Cloudinary::upload($file->getRealPath(), ['folder' => 'AmbienteSaludable']);
-            $imagen_id = $obj->getPublicId();
-            $url = $obj->getSecurePath();
-
-            $imagen = Imagen::create([
-
-                'imagen_url' => $url,
-                'id_imagen' => $imagen_id,
-
-            ]);
-            return response()->json(['messages' => 'Se creo una la imagen con exito.', 'imagen' => $imagen]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+        if ($file && $file->isValid()) {
+            try {
+                $obj = Cloudinary::upload($file->getRealPath(), ['folder' => 'AmbienteSaludable']);
+                $imagen_id = $obj->getPublicId();
+                $url = $obj->getSecurePath();
+                $imagen = Imagen::create([
+                    'imagen_url' => $url,
+                    'id_imagen' => $imagen_id,
+                ]);
+                return response()->json(['messages' => 'Se creo una la imagen con exito.', 'imagen' => $imagen]);
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+        } else {
+            return response()->json(['error' => "problema con imagen"], 500);
         }
     }
 
