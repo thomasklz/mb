@@ -55,13 +55,13 @@ class ImagenController extends Controller
             return response()->json(["error" => "no autorizado"], 403);
         }
 
-        $validator = Validator::make($request->all(), $this->rulesImagenes, $this->mensajes);
+        /* $validator = Validator::make($request->all(), $this->rulesImagenes, $this->mensajes);
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
             return response()->json([
                 'messages' => $messages
             ], 500);
-        }
+        } */
         $file = request()->file('imagen');
         try {
             $obj = Cloudinary::upload($file->getRealPath(), ['folder' => 'AmbienteSaludable']);
