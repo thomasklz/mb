@@ -58,7 +58,7 @@ class ImagenController extends Controller
                 'messages'=>$messages
             ],500);
         } */
-        $file = request()->file('imagen');
+        $file = $request->file('imagen');
         try{
         $obj = Cloudinary::upload($file->getRealPath(),['folder'=>'AmbienteSaludable']);
         $imagen_id = $obj->getPublicId();
