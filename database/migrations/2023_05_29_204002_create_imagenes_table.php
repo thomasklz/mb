@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('imagenes', function (Blueprint $table) {
             $table->id();
             $table->string('imagen_url');
-            $table->string('nombre');
+            $table->string('id_imagen');
 
         });
     }
