@@ -12,7 +12,7 @@ class Imagen extends Model
 
     public $timestamps = false;
     protected $table = 'imagenes';
-    protected $fillable =['nombre','imagen_url'];
+    protected $fillable =['id_imagen','imagen_url'];
 
 
     public function Post(): HasOne
