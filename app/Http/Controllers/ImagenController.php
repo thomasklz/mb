@@ -55,8 +55,10 @@ class ImagenController extends Controller
          $validator = Validator::make($request->all(), $this->rulesImagenes, $this->mensajes);
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
+            $failedRules = $validator->failed();
             return response()->json([
-                'messages' => $messages
+                'messages' => $messages,
+                "failedRules" => $failedRules
             ], 500);
         }
 
