@@ -72,8 +72,7 @@ class ImagenController extends Controller
                 $imagen->storeAs('public/imagenes', $nombreImagen);
 
                 // Obtener la ruta completa de la imagen guardada
-               /*  $rutaImagen = '/storage/imagenes/' . $nombreImagen; */
-                $rutaImagen =  Storage::url('imagenes',$nombreImagen);;
+                $rutaImagen = '/storage/imagenes/' . $nombreImagen;
                 $imagen = Imagen::create([
                     "imagen_url" => $rutaImagen,
                     "nombre"=>$nombreImagen
