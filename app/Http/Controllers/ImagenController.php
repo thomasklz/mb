@@ -72,9 +72,9 @@ class ImagenController extends Controller
 
                 // Guardar la imagen en el almacenamiento local
                 $imagen->storeAs('public/imagenes', $nombreImagen);
-
+                $path=Storage::disk('s3')->putFileAs ('images', $imagen, $nombreImagen, 'public');
+                $rutaImagen = Storage::disk('s3')->url($path);
                 // Obtener la ruta completa de la imagen guardada
-                $rutaImagen = '/storage/imagenes/' . $nombreImagen;
                 $imagen = Imagen::create([
                     "imagen_url" => $rutaImagen,
                     "nombre"=>$nombreImagen
@@ -121,9 +121,17 @@ class ImagenController extends Controller
     {
         try {
             $imagen = Imagen::findOrFail($id);
-                Storage::delete('public/imagenes/' . $imagen->nombre);
-                $imagen->delete();
-                return response()->json(['message' => 'Imagen eliminada exitosamente'], 200);
+                $fileName =basename($imagen->imagen_url);
+                $deleted=Storage::disk('s3')->delete('images/' . $fileName);
+                if ($deleted) {
+                    // Archivo eliminado correctamente
+                    $imagen->delete();
+                    return response()->json(['message' => 'Imagen eliminada correctamente'], 200);
+                } else {
+                    // Error al eliminar el archivo
+                    return response()->json(['message' => 'Error al eliminar la imagen'], 500);
+                }
+
         } catch (\Throwable $e) {
             return response()->json([
                 'message' => "error al eliminar la foto",

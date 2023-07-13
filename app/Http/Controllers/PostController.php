@@ -10,6 +10,7 @@ use App\Models\Post;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -46,8 +47,8 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts = Post::with('Participante','Categoria','Imagen', 'Like','Like.Participante', 'Calificacion', 'Comentario_Post','Comentario_Post.Comentario','Comentario_Post.Participante')->orderBy('fecha','desc')->paginate(10);
-       /*  $posts = Post::with('Participante:id,nombres,cedula', 'Like.Post:id,titulo', 'Like.Participante:id,nombres', 'Calificacion', 'Comentario_Post.Comentario:id,mensaje')->paginate(10); */
+        $posts = Post::with('Participante', 'Categoria', 'Imagen', 'Like', 'Like.Participante', 'Calificacion', 'Comentario_Post', 'Comentario_Post.Comentario', 'Comentario_Post.Participante')->orderBy('fecha', 'desc')->paginate(10);
+        /*  $posts = Post::with('Participante:id,nombres,cedula', 'Like.Post:id,titulo', 'Like.Participante:id,nombres', 'Calificacion', 'Comentario_Post.Comentario:id,mensaje')->paginate(10); */
         return response()->json(['Posts' => $posts]);
     }
 
@@ -75,8 +76,8 @@ class PostController extends Controller
         };
 
         $postExistente = Post::where('participante_id', $usuario->id)
-        ->where('categoria_id', $request->categoria_id)
-        ->first();
+            ->where('categoria_id', $request->categoria_id)
+            ->first();
         if ($postExistente) {
             return response()->json(['error' => 'El usuario ya ha dado subido una imagen a esta categoria'], 500);
         }
@@ -103,16 +104,15 @@ class PostController extends Controller
     {
         //
         try {
-            $posts = Post::with('Participante','Categoria','Imagen', 'Like','Like.Participante', 'Calificacion', 'Comentario_Post','Comentario_Post.Comentario','Comentario_Post.Participante')->where('id',$id)->first();
+            $posts = Post::with('Participante', 'Categoria', 'Imagen', 'Like', 'Like.Participante', 'Calificacion', 'Comentario_Post', 'Comentario_Post.Comentario', 'Comentario_Post.Participante')->where('id', $id)->first();
             /*  $posts = Post::with('Participante:id,nombres,cedula', 'Like.Post:id,titulo', 'Like.Participante:id,nombres', 'Calificacion', 'Comentario_Post.Comentario:id,mensaje')->paginate(10); */
-             return response()->json($posts);
+            return response()->json($posts);
             //code...
         } catch (\Throwable $th) {
             //throw $th;
 
             return response()->json(['no se encontró el post', 'Post' => $posts]);
         }
-
     }
     /**
      * Display the specified resource.
@@ -123,7 +123,7 @@ class PostController extends Controller
     public function showCategoria($idcategoria)
     {
         //
-        $posts = Post::with('Participante','Categoria','Imagen', 'Like','Like.Participante', 'Calificacion', 'Comentario_Post','Comentario_Post.Comentario','Comentario_Post.Participante')->where('categoria_id', $idcategoria)->orderBy('fecha','desc')->paginate(10);
+        $posts = Post::with('Participante', 'Categoria', 'Imagen', 'Like', 'Like.Participante', 'Calificacion', 'Comentario_Post', 'Comentario_Post.Comentario', 'Comentario_Post.Participante')->where('categoria_id', $idcategoria)->orderBy('fecha', 'desc')->paginate(10);
         return response()->json(['Posts' => $posts]);
     }
 
@@ -134,12 +134,12 @@ class PostController extends Controller
             return response()->json(["error" => "no autorizado"], 403);
         }
 
-        $posts = Post::with('Participante','Categoria','Imagen', 'Like','Like.Participante', 'Calificacion', 'Comentario_Post','Comentario_Post.Comentario','Comentario_Post.Participante')
-                    ->whereDoesntHave('Calificacion', function ($query) use ($usuario) {
-                        $query->where('user_id', $usuario->id);
-                    })
-                    ->orderBy('fecha','desc')
-                    ->paginate(10);
+        $posts = Post::with('Participante', 'Categoria', 'Imagen', 'Like', 'Like.Participante', 'Calificacion', 'Comentario_Post', 'Comentario_Post.Comentario', 'Comentario_Post.Participante')
+            ->whereDoesntHave('Calificacion', function ($query) use ($usuario) {
+                $query->where('user_id', $usuario->id);
+            })
+            ->orderBy('fecha', 'desc')
+            ->paginate(10);
         return response()->json(['Posts' => $posts]);
     }
     public function postSinCalificarConCategoria($categoria_id)
@@ -149,12 +149,12 @@ class PostController extends Controller
             return response()->json(["error" => "no autorizado"], 403);
         }
 
-        $posts = Post::with('Participante','Categoria','Imagen', 'Like','Like.Participante', 'Calificacion', 'Comentario_Post','Comentario_Post.Comentario','Comentario_Post.Participante')
-                    ->whereDoesntHave('Calificacion', function ($query) use ($usuario) {
-                        $query->where('user_id', $usuario->id);
-                    })->where('categoria_id','=',$categoria_id)
-                    ->orderBy('fecha','desc')
-                    ->paginate(10);
+        $posts = Post::with('Participante', 'Categoria', 'Imagen', 'Like', 'Like.Participante', 'Calificacion', 'Comentario_Post', 'Comentario_Post.Comentario', 'Comentario_Post.Participante')
+            ->whereDoesntHave('Calificacion', function ($query) use ($usuario) {
+                $query->where('user_id', $usuario->id);
+            })->where('categoria_id', '=', $categoria_id)
+            ->orderBy('fecha', 'desc')
+            ->paginate(10);
         return response()->json(['Posts' => $posts]);
     }
 
@@ -184,12 +184,20 @@ class PostController extends Controller
             return response()->json(["error" => "no autorizado"], 403);
         }
         try {
-            $post=Post::findOrFail($id);
-            $producto = Imagen::findOrFail($post->imagen_id);
-            $public_id = $producto->id_imagen;
-            Cloudinary::destroy($public_id);
-            $producto->delete();
-            $post->delete();
+            $post = Post::findOrFail($id);
+            $imagen = Imagen::findOrFail($post->imagen_id);
+            $fileName = basename($imagen->imagen_url);
+            $deleted = Storage::disk('s3')->delete('images/' . $fileName);
+            if ($deleted) {
+                // Archivo eliminado correctamente
+                $imagen->delete();
+                $post->delete();
+                return response()->json(['message' => 'Imagen eliminada correctamente'], 200);
+            } else {
+                // Error al eliminar el archivo
+                return response()->json(['message' => 'Error al eliminar la imagen'], 500);
+            }
+
             return response()->json([
                 'messages' => 'Se Elimino con exito'
             ]);
