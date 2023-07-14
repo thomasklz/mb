@@ -17,7 +17,7 @@ class DateRangeCalificarMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $startDate = Carbon::parse('2023-07-31 00:00:00');
+        $startDate = Carbon::parse('2023-08-07 00:00:00');
         $endDate = Carbon::parse('2023-08-16 23:59:59');
         $currentDate = Carbon::now();
         if ($currentDate->between($startDate, $endDate)) {
