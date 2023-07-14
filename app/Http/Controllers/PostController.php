@@ -186,18 +186,8 @@ class PostController extends Controller
         try {
             $post = Post::findOrFail($id);
             $imagen = Imagen::findOrFail($post->imagen_id);
-            $fileName = basename($imagen->imagen_url);
-            $deleted = Storage::disk('s3')->delete('images/' . $fileName);
-            if ($deleted) {
-                // Archivo eliminado correctamente
-                $imagen->delete();
-                $post->delete();
-                return response()->json(['message' => 'Imagen eliminada correctamente'], 200);
-            } else {
-                // Error al eliminar el archivo
-                return response()->json(['message' => 'Error al eliminar la imagen'], 500);
-            }
-
+            $imagen->delete();
+            $post->delete();
             return response()->json([
                 'messages' => 'Se Elimino con exito'
             ]);
