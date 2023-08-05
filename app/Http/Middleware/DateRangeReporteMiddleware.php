@@ -17,7 +17,7 @@ class DateRangeReporteMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $startDate = Carbon::parse('2023-08-18 00:00:00');
+        $startDate = Carbon::parse('2023-08-17 00:00:00');
 
         $currentDate = Carbon::now();
         if ($currentDate->gte($startDate)) {
